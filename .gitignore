@@ -1,25 +1,6 @@
-# 只包含 Xiaoxu 主题文件，忽略其他所有文件
+# Xiaoxu 主题 - 静态文件项目
 
-# 包含整个项目，但排除 Xiaoxu 目录
-/*
-
-# 保留 Xiaoxu 主题目录及其内容
-!web/
-web/*
-!web/Xiaoxu/
-!web/Xiaoxu/**
-
-# Git 相关
-!.gitignore
-!.git/
-
-# 文档和脚本
-!README.md
-!deploy.sh
-!package.json
-!.github/
-
-# 开发工具配置（可选）
+# 系统文件
 .DS_Store
 .vscode/
 .idea/
@@ -27,11 +8,17 @@ web/*
 *.tmp
 *.cache
 
-# Node modules（如果需要的话）
-node_modules/
+# 临时文件
+*.bak
+*.swp
+*.swo
+*~
 
-# 构建缓存
-.next/
-.nuxt/
-dist/
-build/
+# 开发相关（如果有的话）
+node_modules/
+.env
+.env.local
+
+# 备份文件
+backup/
+*.backup
