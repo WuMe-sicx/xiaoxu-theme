@@ -1,0 +1,86 @@
+name: 🚀 自动部署 Xiaoxu 主题
+
+on:
+  push:
+    branches: [ main, master ]
+    paths:
+      - 'web/src/**'
+      - 'web/public/**'
+      - 'web/*.json'
+      - 'web/*.js'
+      - 'web/*.ts'
+      - '.github/workflows/**'
+  
+  # 手动触发
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [18.x]
+    
+    steps:
+    - name: 📥 检出代码
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    
+    - name: 🟢 设置 Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+        cache-dependency-path: web/package-lock.json
+    
+    - name: 📦 安装依赖
+      run: |
+        cd web
+        npm ci
+    
+    - name: 🔨 构建项目
+      run: |
+        cd web
+        npm run build
+      env:
+        NODE_ENV: production
+    
+    - name: 📋 验证构建结果
+      run: |
+        echo "=== 构建结果验证 ==="
+        ls -la web/Xiaoxu/
+        echo "Assets目录内容:"
+        ls -la web/Xiaoxu/assets/ | head -10
+        echo "构建文件数量: $(find web/Xiaoxu/assets -type f | wc -l)"
+    
+    - name: 💾 提交构建结果
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add web/Xiaoxu/
+        
+        if git diff --cached --quiet; then
+          echo "没有检测到变更，跳过提交"
+        else
+          git commit -m "🤖 自动构建: $(date '+%Y-%m-%d %H:%M:%S') [skip ci]"
+          git push
+        fi
+    
+    - name: 📊 部署报告
+      run: |
+        echo "### 🎉 部署完成报告" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "**构建时间:** $(date)" >> $GITHUB_STEP_SUMMARY
+        echo "**Node.js版本:** ${{ matrix.node-version }}" >> $GITHUB_STEP_SUMMARY
+        echo "**资源文件数量:** $(find web/Xiaoxu/assets -type f | wc -l)" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "**目录结构:**" >> $GITHUB_STEP_SUMMARY
+        echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+        echo "Xiaoxu/" >> $GITHUB_STEP_SUMMARY
+        echo "├── assets/     (静态打包资源)" >> $GITHUB_STEP_SUMMARY  
+        echo "├── views/" >> $GITHUB_STEP_SUMMARY
+        echo "│   └── index.blade.php" >> $GITHUB_STEP_SUMMARY
+        echo "└── XiaoxuTheme.php" >> $GITHUB_STEP_SUMMARY
+        echo "\`\`\`" >> $GITHUB_STEP_SUMMARY

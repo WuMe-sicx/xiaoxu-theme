@@ -1,0 +1,1 @@
+import{d as s,b as a,ai as e,e as o}from"./index-HMHCBO22.js";const t={class:"min-h-[calc(100vh-9rem)] flex flex-col grow"},l=s({__name:"Content",setup:s=>(s,l)=>(o(),a("div",t,[e(s.$slots,"default")]))});export{l as _};
