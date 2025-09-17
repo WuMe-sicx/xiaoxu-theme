@@ -2,7 +2,7 @@
 
 > 基于 Vue3 + Vite + Laravel 的现代化图床主题，采用前后端分离架构
 
-[![Build Status](https://github.com/your-username/xiaoxu-theme/workflows/🚀%20自动部署%20Xiaoxu%20主题/badge.svg)](https://github.com/your-username/xiaoxu-theme/actions)
+[![Build Status](https://github.com/WuMe-sicx/xiaoxu-theme/workflows/🚀%20自动部署%20Xiaoxu%20主题/badge.svg)](https://github.com/WuMe-sicx/xiaoxu-theme/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Vue 3](https://img.shields.io/badge/Vue-3-4FC08D?logo=vue.js&logoColor=white)](https://vuejs.org/)
 [![Laravel](https://img.shields.io/badge/Laravel-FF2D20?logo=laravel&logoColor=white)](https://laravel.com/)
@@ -38,122 +38,160 @@ Xiaoxu/
 
 ### 环境要求
 
-- Node.js >= 16.0.0
-- npm >= 8.0.0
 - PHP >= 8.0
 - Laravel >= 9.0
+- 兰空图床系统
 
-### 安装步骤
+> 💡 **注意**: 本仓库包含的是已构建好的静态文件，无需Node.js环境，可直接部署使用。
 
-1. **克隆仓库**
-   ```bash
-   git clone https://github.com/your-username/xiaoxu-theme.git
-   cd xiaoxu-theme
-   ```
+### 💻 部署到兰空图床
 
-2. **安装依赖**
-   ```bash
-   cd web
-   npm install
-   ```
+#### 方法一：新建主题目录（推荐）
 
-3. **开发模式**
-   ```bash
-   npm run dev
-   ```
+```bash
+# 进入兰空图床主题目录
+cd /path/to/your/lsky/themes
 
-4. **构建生产版本**
-   ```bash
-   npm run build
-   ```
+# 克隆主题到Xiaoxu目录
+git clone https://github.com/WuMe-sicx/xiaoxu-theme.git Xiaoxu
+```
 
-## 📦 自动部署
+#### 方法二：覆盖现有目录
 
-### 方式一：本地脚本部署
+如果已存在 `Xiaoxu` 目录：
+
+```bash
+# 进入现有Xiaoxu目录
+cd /path/to/your/lsky/themes/Xiaoxu
+
+# 克隆到当前目录（会覆盖现有文件）
+git clone https://github.com/WuMe-sicx/xiaoxu-theme.git .
+```
+
+### ⚠️ 重要提醒
+
+**请确保目标目录名称为 `Xiaoxu`**，这样Laravel才能正确识别主题：
+
+```
+themes/
+└── Xiaoxu/              ← 目录名必须是 Xiaoxu
+    ├── assets/          ← 静态资源文件
+    ├── views/
+    │   └── index.blade.php
+    └── XiaoxuTheme.php
+```
+
+### 🎛️ 启用主题
+
+1. 登录兰空图床管理后台
+2. 进入 **系统设置** → **主题管理**
+3. 选择 **Xiaoxu** 主题
+4. 点击 **启用** 即可
+
+## 🔄 更新主题
+
+### 获取最新版本
+
+```bash
+# 进入主题目录
+cd /path/to/your/lsky/themes/Xiaoxu
+
+# 拉取最新更新
+git pull origin main
+```
+
+### 自动更新脚本（可选）
+
+创建一个更新脚本 `update-theme.sh`：
+
+```bash
+#!/bin/bash
+echo "🔄 正在更新Xiaoxu主题..."
+cd /path/to/your/lsky/themes/Xiaoxu
+git pull origin main
+echo "✅ 主题更新完成！"
+```
+
+## 📦 开发者部署（仅开发者需要）
+
+<details>
+<summary>🔧 点击展开开发者部署选项</summary>
+
+### 本地构建部署
 
 ```bash
 # 运行自动部署脚本
 ./deploy.sh
 ```
 
-脚本会自动：
-- 🔨 构建 Vue 项目
-- 📁 复制资源到 Xiaoxu 目录
-- 💾 提交到 Git
-- ⬆️ 推送到 GitHub
+### GitHub Actions 自动部署
 
-### 方式二：GitHub Actions 自动部署
+推送代码后自动构建和部署到GitHub。
 
-推送代码到 `main` 或 `master` 分支时，GitHub Actions 会自动：
-- 🔄 检测源码变更
-- 🏗️ 构建项目
-- 📤 自动提交构建结果
+</details>
 
-## ⚙️ 配置说明
+## ⚙️ 主题配置
 
-### Git 远程仓库设置
+### 主题定制选项
 
-首次使用需要设置 GitHub 远程仓库：
+登录兰空图床管理后台，进入主题设置可配置：
 
-```bash
-git remote add origin https://github.com/your-username/xiaoxu-theme.git
-git branch -M main
-git push -u origin main
-```
+1. **基础设置**
+   - 网站标题、副标题
+   - 网站图标和描述
+   - 首页横幅内容
 
-### GitHub Actions 权限
+2. **背景设置**
+   - 首页背景图片
+   - 登录页背景图片
+   - 支持多张图片轮播
 
-确保 GitHub 仓库开启以下权限：
-- Settings → Actions → General → Workflow permissions → Read and write permissions
+3. **模块控制**
+   - 产品功能模块
+   - 用户作品展示
+   - 价格计划显示
 
-## 🛠️ 开发指南
+4. **友情链接**
+   - 自定义友情链接
+   - 支持添加多个链接
 
-### 目录说明
+5. **高级设置**
+   - 自定义CSS样式
+   - 自定义JavaScript代码
 
-- `web/src/` - Vue.js 源码
-- `web/public/` - 静态资源
-- `web/Xiaoxu/` - 构建输出目录
-- `.github/workflows/` - GitHub Actions 配置
+### 主题特性
 
-### 构建配置
-
-项目使用 Vite 进行构建，配置文件位于 `web/vite.config.ts`：
-
-```typescript
-export default defineConfig({
-  build: {
-    outDir: './Xiaoxu',
-    // 其他构建配置...
-  }
-})
-```
-
-### 样式定制
-
-- 主要样式使用 Tailwind CSS
-- 自定义样式位于 `web/src/assets/`
-- 支持主题管理员面板自定义 CSS
+- ✨ **响应式设计**：完美适配桌面和移动设备
+- 🚀 **性能优化**：Gzip压缩，资源优化，快速加载
+- 🎨 **现代界面**：Vue3 + NativeUI 精美界面
+- 🔧 **高度可定制**：丰富的配置选项
+- 🛡️ **安全稳定**：基于Laravel框架，安全可靠
 
 ## 🔧 故障排除
 
 ### 常见问题
 
-**Q: 构建失败怎么办？**
+**Q: 主题无法启用？**
+- 确认目录名称为 `Xiaoxu`（注意大小写）
+- 检查文件权限，确保Web服务器可以访问
+- 确认 `XiaoxuTheme.php` 文件存在
+
+**Q: 静态资源加载失败？**
+- 检查 `assets` 目录是否完整
+- 确认Web服务器配置允许访问静态文件
+- 清除浏览器缓存后重试
+
+**Q: 主题更新失败？**
 ```bash
-cd web
-npm install  # 重新安装依赖
-npm run build # 重新构建
+# 强制更新到最新版本
+git fetch origin main
+git reset --hard origin/main
 ```
 
-**Q: 推送失败？**
-```bash
-git remote -v  # 检查远程仓库
-git push -f origin main  # 强制推送（谨慎使用）
-```
-
-**Q: Assets 目录为空？**
-- 检查 `web/vite.config.ts` 中的 `outDir` 配置
-- 确保构建过程没有错误
+**Q: 页面显示异常？**
+- 检查PHP版本是否符合要求（>= 8.0）
+- 确认Laravel版本兼容性
+- 查看服务器错误日志
 
 ## 📈 性能优化
 
